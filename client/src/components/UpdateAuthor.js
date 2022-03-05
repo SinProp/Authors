@@ -5,11 +5,13 @@ import { Link, navigate }from "@reach/router"
 const UpdateAuthor = (props) => {
     const [authorName, setAuthorName] = useState("");
     const [id, setId] = useState("");
+    const [errors, setErrors] = useState("");
+    const { _id } = props;    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-        .put(`http://localhost:8000/api/authors/${_id}`, {
+        .post(`http://localhost:8000/api/authors/${_id}`, {
             authorName,
 
         })
@@ -17,17 +19,20 @@ const UpdateAuthor = (props) => {
             console.log(response);
             navigate("/");
             })
-        .catch((err) => console.log(err));
-    
-};
-    const { _id } = props;    
+        .catch((err) => {
+            
+            console.log("ERROR FOUND");
+            console.log(err.response.data.err.errors);
+            setErrors(err.response.data.err.errors);
+        });
+    };
 
     useEffect(() => {
         axios
         .get(`http://localhost:8000/api/authors/${_id}`)
         .then(response => {
             console.log(response.data);
-            setuthorName(response.data.authorName);
+            setAuthorName(response.data.authorName);
             setId(response.data._id);
 
         })
@@ -49,13 +54,16 @@ const UpdateAuthor = (props) => {
         onChange={(e) => setAuthorName(e.target.value)}
         value={authorName}
         />
+        <button className="btn btn-success"type="submit" value="Update">Update</button>
+        {errors.authorName ? <p>{errors.authorName.message}</p> : null}
         </div>
 
-        <button className="btn btn-success"type="submit" value="Update">Update</button>
+
     </form>
 
     </div>
     );
     };
+
 
 export default UpdateAuthor;

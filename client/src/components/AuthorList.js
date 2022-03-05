@@ -4,8 +4,9 @@ import { useState, useEffect} from "react";
 import "../App.css";
 
 
-const AuthorList = () => {
+const AuthorList = (props) => {
     const [authors, setAuthors] = useState([]);
+    const { _id } = props;    
 
 
     useEffect(() => {
@@ -18,21 +19,23 @@ const AuthorList = () => {
         .catch(err => console.log(err));
     }, []);
 
-const deleteFilter = (idFromBelow) => {
-    axios
-    .delete(`http://localhost:8000/api/authors/${idFromBelow}`)
-    .then(response => {
-        console.log(response.data);
-        setAuthors(authors.filter((author, index) => author._id !== idFromBelow));
-    })
-    .catch(err => console.log(err));
-}
+// const deleteFilter = (idFromBelow) => {
+//     axios
+//     .delete(`http://localhost:8000/api/authors/${idFromBelow}`)
+//     .then(response => {
+//         console.log(response.data);
+//         setAuthors(authors.filter((author)=>author._id !== _id))
+//     })
+//     .catch(err => console.log(err));
+// }
 
-const deleteHandler = () => {
-    axios.delete(`http://localhost:8000/api/authors/${_id}`)
+const deleteHandler = (idFromBelow) => {
+    axios.delete(`http://localhost:8000/api/authors/${idFromBelow}`)
     .then(response => {
         console.log(response.data);
-        navigate("/");
+        setAuthors(authors.filter((authors, index) => authors._id !== idFromBelow));
+    navigate("/");
+
     })
     .catch(err => console.log(err));
 }
@@ -45,7 +48,7 @@ const deleteHandler = () => {
         <h1 >Favorite Authors </h1> 
         <h3>We have quotes by:</h3>
         <hr />
-        <h2 className="text-center"><Link to="/new-Author">Add a Author to the shelter
+        <h2 className="text-center"><Link to="/new-author">Add a Author
         </Link>
         </h2>        
 
@@ -61,9 +64,10 @@ const deleteHandler = () => {
                     return (
                     <tr key={author._id}>
                                 <td>{author.authorName}</td>
-                                <td>{author.authorType}</td>
-                                <td><button className="btn btn-danger" onClick={deleteHandler}>Delete {author.authorName}</button>
-                                <button className="button-margin" onClick={()=>navigate(`/edit/${author._id}`)}>Edit</button>
+                                <td>
+                                <button className="btn btn-danger" onClick={(e)=>deleteHandler('author._id')}>Delete</button>
+                                <button className="btn btn-primary" onClick={()=>navigate(`/edit/${author._id}`)}>Edit</button>
+                                
                                 </td>
                                 
                             </tr>

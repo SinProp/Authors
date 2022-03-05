@@ -5,14 +5,13 @@ import "../App.css";
 
 
 const AuthorForm = () => {
-    // const {submissionBoolean, setSubmissionBoolean} = props; // creates a prop that acts as our lifted state variable
     const [authorName, setAuthorName] = useState("");
     const [errors, setErrors] = useState("");
     
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-        .post("http://localhost:8000/api/Authors", {
+        .post("http://localhost:8000/api/authors", {
             authorName,
             
         })
@@ -47,10 +46,10 @@ const AuthorForm = () => {
         onChange={(e) => setAuthorName(e.target.value)}
         value={authorName}
         />
-        </div>
-        {errors.authorName ? <p>{errors.authorName.message}</p> : null}
-
         <button className="btn btn-primary btn-lg" type="submit">Add Author</button>
+        {errors.authorName ? <p>{errors.authorName.message}</p> : null}
+        </div>
+
     </form>
     </div>
     );
