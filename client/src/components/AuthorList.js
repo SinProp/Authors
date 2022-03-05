@@ -6,7 +6,6 @@ import "../App.css";
 
 const AuthorList = (props) => {
     const [authors, setAuthors] = useState([]);
-    const { _id } = props;    
 
 
     useEffect(() => {
@@ -19,22 +18,13 @@ const AuthorList = (props) => {
         .catch(err => console.log(err));
     }, []);
 
-// const deleteFilter = (idFromBelow) => {
-//     axios
-//     .delete(`http://localhost:8000/api/authors/${idFromBelow}`)
-//     .then(response => {
-//         console.log(response.data);
-//         setAuthors(authors.filter((author)=>author._id !== _id))
-//     })
-//     .catch(err => console.log(err));
-// }
 
-const deleteHandler = (idFromBelow) => {
+const deleteFilter = (idFromBelow) => {
     axios.delete(`http://localhost:8000/api/authors/${idFromBelow}`)
     .then(response => {
         console.log(response.data);
-        setAuthors(authors.filter((authors, index) => authors._id !== idFromBelow));
-    navigate("/");
+        setAuthors(authors.filter((author, index) => author._id !== idFromBelow));
+        navigate("/");
 
     })
     .catch(err => console.log(err));
@@ -65,7 +55,7 @@ const deleteHandler = (idFromBelow) => {
                     <tr key={author._id}>
                                 <td>{author.authorName}</td>
                                 <td>
-                                <button className="btn btn-danger" onClick={(e)=>deleteHandler('author._id')}>Delete</button>
+                                <button className="btn btn-danger" onClick={()=>deleteFilter(author._id)}>Delete</button>
                                 <button className="btn btn-primary" onClick={()=>navigate(`/edit/${author._id}`)}>Edit</button>
                                 
                                 </td>

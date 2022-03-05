@@ -11,7 +11,7 @@ const UpdateAuthor = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-        .post(`http://localhost:8000/api/authors/${_id}`, {
+        .put(`http://localhost:8000/api/authors/${_id}`, {
             authorName,
 
         })
